@@ -8,6 +8,14 @@ export default function Form({ onAddActivity }) {
       isForGoodWeather: event.target.weatherCheckbox.checked,
     };
 
+    const color = "#fff";
+    const radius = 4;
+    const number = 100;
+
+    const object = { color, radius, number };
+
+    console.log(object);
+
     onAddActivity(data);
 
     event.target.reset();
