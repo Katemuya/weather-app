@@ -9,9 +9,16 @@ export default function App() {
   const [activities, setActivities] = useLocalStorageState("activities", {
     defaultValue: [],
   });
+  console.log(activities);
 
   function handleAddActivity(newData) {
     setActivities([...activities, { ...newData, id: uid() }]);
+  }
+
+  function handleDeleteActivity(id) {
+    setActivities(
+      activities.filter((activity) => (activity.id !== id ? true : false))
+    );
   }
 
   const [weather, setWeather] = useState();
@@ -43,7 +50,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <div className="app">
       <h1>
         <span role="img">{weather?.condition}</span>
         {weather?.temperature}
@@ -51,8 +58,9 @@ export default function App() {
       <List
         activities={filteredActivities(activities)}
         isGoodWeather={weather?.isGoodWeather}
+        onDeleteActivity={handleDeleteActivity}
       />
       <Form onAddActivity={handleAddActivity}></Form>
-    </>
+    </div>
   );
 }
