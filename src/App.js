@@ -1,8 +1,6 @@
 import "./App.css";
 import Form from "./components/Form/Form";
 
-function App() {
+export default function App() {
   return <Form></Form>;
 }
-
-export default App;
