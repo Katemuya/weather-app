@@ -1,8 +1,20 @@
 import "./Form.css";
 
-export default function Form() {
+export default function Form({ onAddActivity }) {
+  function handleSubmit(event) {
+    event.preventDefault();
+    const data = {
+      name: event.target.name.value,
+      isForGoodWeather: event.target.weatherCheckbox.checked,
+    };
+
+    onAddActivity(data);
+
+    event.target.reset();
+    event.target.name.focus();
+  }
   return (
-    <form className="form">
+    <form className="form" onSubmit={handleSubmit}>
       <h2>Add new Activity:</h2>
       <div className="form__name-container">
         <label className="form__input-label" htmlFor="name">
