@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Form from "./components/Form/Form";
 import List from "./components/List/List";
@@ -14,16 +14,44 @@ export default function App() {
     setActivities([...activities, { ...newData, id: uid() }]);
   }
 
-  const isGoodWeather = true;
+  const [weather, setWeather] = useState();
+  useEffect(() => {
+    async function fetchWeather() {
+      try {
+        const response = await fetch(
+          "https://example-apis.vercel.app/api/weather"
+        );
+        if (response.ok) {
+          const weatherResponse = await response.json();
+          console.log(weatherResponse);
+
+          setWeather(weatherResponse);
+        } else {
+          console.log("response is not okay");
+        }
+      } catch (error) {
+        error(error);
+      }
+    }
+    fetchWeather();
+  }, []);
+
   function filteredActivities(activities) {
     return activities.filter(
-      (activity) => activity.isForGoodWeather === isGoodWeather
+      (activity) => activity.isForGoodWeather === weather?.isGoodWeather
     );
   }
 
   return (
     <>
-      <List activities={filteredActivities(activities)} isGoodWeather />
+      <h1>
+        <span role="img">{weather?.condition}</span>
+        {weather?.temperature}
+      </h1>
+      <List
+        activities={filteredActivities(activities)}
+        isGoodWeather={weather?.isGoodWeather}
+      />
       <Form onAddActivity={handleAddActivity}></Form>
     </>
   );
